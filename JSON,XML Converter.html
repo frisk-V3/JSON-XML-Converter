@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>JSON/XML Converter</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; color: #333; }
+        .container { display: flex; gap: 10px; }
+        .box { flex: 1; }
+        textarea { width: 100%; height: 400px; padding: 10px; box-sizing: border-box; font-family: monospace; border: 1px solid #ccc; border-radius: 4px; }
+        .controls { display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+        button { padding: 10px; cursor: pointer; background: #eee; border: 1px solid #999; border-radius: 4px; }
+        button:hover { background: #ddd; }
+        h2 { font-size: 1.2rem; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="box">
+        <h2>INPUT</h2>
+        <textarea id="in" placeholder="JSON or XML"></textarea>
+    </div>
+    <div class="controls">
+        <button onclick="convert('json')">→ JSON</button>
+        <button onclick="convert('xml')">→ XML</button>
+        <button onclick="swap()">SWAP</button>
+    </div>
+    <div class="box">
+        <h2>OUTPUT</h2>
+        <textarea id="out" readonly></textarea>
+    </div>
+</div>
+
+<script>
+    function convert(type) {
+        const input = document.getElementById('in').value.trim();
+        const output = document.getElementById('out');
+        try {
+            if (type === 'json') {
+                const xmlDoc = new DOMParser().parseFromString(input, "text/xml");
+                output.value = JSON.stringify(xml2obj(xmlDoc), null, 2);
+            } else {
+                const json = JSON.parse(input);
+                output.value = '<?xml version="1.0" encoding="UTF-8"?>\n<root>\n' + obj2xml(json, "  ") + '</root>';
+            }
+        } catch (e) {
+            output.value = "Error: " + e.message;
+        }
+    }
+
+    function xml2obj(xml) {
+        let obj = {};
+        if (xml.nodeType === 1 && xml.attributes.length > 0) {
+            obj["@"] = {};
+            for (let j = 0; j < xml.attributes.length; j++) {
+                const a = xml.attributes.item(j);
+                obj["@"][a.nodeName] = a.nodeValue;
+            }
+        } else if (xml.nodeType === 3) {
+            obj = xml.nodeValue.trim();
+        }
+        if (xml.hasChildNodes()) {
+            for (let i = 0; i < xml.childNodes.length; i++) {
+                const item = xml.childNodes.item(i);
+                const name = item.nodeName;
+                if (name === "#text" && !item.nodeValue.trim()) continue;
+                if (obj[name] === undefined) {
+                    obj[name] = xml2obj(item);
+                } else {
+                    if (!Array.isArray(obj[name])) obj[name] = [obj[name]];
+                    obj[name].push(xml2obj(item));
+                }
+            }
+        }
+        return obj;
+    }
+
+    function obj2xml(obj, indent) {
+        let xml = '';
+        for (let p in obj) {
+            if (p === "@") continue;
+            xml += indent + "<" + p + ">";
+            if (typeof obj[p] === 'object') {
+                xml += "\n" + obj2xml(obj[p], indent + "  ") + indent;
+            } else {
+                xml += obj[p];
+            }
+            xml += "</" + p + ">\n";
+        }
+        return xml;
+    }
+
+    function swap() {
+        const inArea = document.getElementById('in');
+        const outArea = document.getElementById('out');
+        const tmp = inArea.value;
+        inArea.value = outArea.value;
+        outArea.value = tmp;
+    }
+</script>
+
+</body>
+</html>
