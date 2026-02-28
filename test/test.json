@@ -1,0 +1,26 @@
+{
+  "status": "success",
+  "data": {
+    "account": {
+      "id": "ACC-9982",
+      "plan": "Professional",
+      "isActive": true
+    },
+    "projects": [
+      {
+        "name": "Cloud Horizon",
+        "deadline": "2024-12-31",
+        "tags": ["cloud", "infrastructure", "v3"]
+      },
+      {
+        "name": "Phoenix Migration",
+        "deadline": "2025-03-15",
+        "tags": ["database", "legacy"]
+      }
+    ]
+  },
+  "metadata": {
+    "totalCount": 2,
+    "requestId": "req_550e8400"
+  }
+}
