@@ -1,9 +1,0 @@
-[test data explanation]
-
-- sample.json : 標準的なJSON構造のテスト用。
-- sample.xml  : 属性や階層を含むXML構造のテスト用。
-
-これらのファイルを JSON-XML-Converterの入力エリアに貼り付けて
-正しく変換されるかを確認してください。
-
-by frisk-V3
