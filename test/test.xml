@@ -1,0 +1,33 @@
+<root>
+  <status>success</status>
+  <data>
+    <account>
+      <id>ACC-9982</id>
+      <plan>Professional</plan>
+      <isActive>true</isActive>
+    </account>
+    <projects>
+      <project>
+        <name>Cloud Horizon</name>
+        <deadline>2024-12-31</deadline>
+        <tags>
+          <tag>cloud</tag>
+          <tag>infrastructure</tag>
+          <tag>v3</tag>
+        </tags>
+      </project>
+      <project>
+        <name>Phoenix Migration</name>
+        <deadline>2025-03-15</deadline>
+        <tags>
+          <tag>database</tag>
+          <tag>legacy</tag>
+        </tags>
+      </project>
+    </projects>
+  </data>
+  <metadata>
+    <totalCount>2</totalCount>
+    <requestId>req_550e8400</requestId>
+  </metadata>
+</root>
